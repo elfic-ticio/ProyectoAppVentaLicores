@@ -1,0 +1,167 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  GUEST
+  BUYER
+  SELLER
+  MODERATOR
+  ADMIN
+  SUPER_ADMIN
+  DPO
+}
+
+enum ConditionGrade {
+  A // Nuevo con empaque dañado
+  B // Defectos cosméticos menores
+  C // Defectos cosméticos visibles
+  D // Defectos significativos o reacondicionado
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  phone         String?
+  password_hash String?
+  role          Role     @default(BUYER)
+  mfa_enabled   Boolean  @default(false)
+  kyc_status    String   @default("PENDING")
+  created_at    DateTime @default(now())
+
+  // Relations
+  seller        Seller?
+  addresses     Address[]
+  orders        Order[]
+  reviews       Review[]
+  notifications Notification[]
+}
+
+model Seller {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id])
+  legal_name         String
+  rfc                String
+  tax_regime         String
+  verification_level String
+  payout_account     String?
+
+  products           Product[]
+}
+
+model Product {
+  id              String   @id @default(cuid())
+  sellerId        String
+  seller          Seller   @relation(fields: [sellerId], references: [id])
+  sku             String   @unique
+  title           String
+  description     String
+  condition_grade ConditionGrade
+  original_price  Float
+  sale_price      Float
+  stock           Int
+  images          String[]
+
+  reviews         Review[]
+}
+
+model Address {
+  id        String @id @default(cuid())
+  userId    String
+  user      User   @relation(fields: [userId], references: [id])
+  street    String
+  city      String
+  state     String
+  zip       String
+}
+
+model Order {
+  id              String  @id @default(cuid())
+  userId          String
+  user            User    @relation(fields: [userId], references: [id])
+  total           Float
+  status          String
+  payment_status  String
+  shipping_status String
+  invoice_id      String?
+
+  items           OrderItem[]
+  payment         Payment?
+  shipment        Shipment?
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  price     Float
+  quantity  Int
+}
+
+model Payment {
+  id             String @id @default(cuid())
+  orderId        String @unique
+  order          Order  @relation(fields: [orderId], references: [id])
+  provider       String
+  provider_tx_id String
+  amount         Float
+  currency       String
+  status         String
+}
+
+model Shipment {
+  id              String   @id @default(cuid())
+  orderId         String   @unique
+  order           Order    @relation(fields: [orderId], references: [id])
+  carrier         String
+  tracking_number String
+  status          String
+  delivered_at    DateTime?
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  rating    Int
+  comment   String?
+}
+
+model Notification {
+  id         String           @id @default(cuid())
+  userId     String
+  type       NotificationType
+  title      String
+  message    String
+  is_read    Boolean          @default(false)
+  created_at DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum NotificationType {
+  ORDER_CREATED
+  ORDER_SHIPPED
+  PAYMENT_SUCCESS
+  SYSTEM_ALERT
+  PROMOTION
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actor_id   String
+  action     String
+  resource   String
+  ip         String?
+  user_agent String?
+  created_at DateTime @default(now())
+}

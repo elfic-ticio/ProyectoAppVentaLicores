@@ -1,0 +1,26 @@
+node_modules/
+.pnp
+.pnp.js
+.vercel
+.turbo
+.next
+
+# testing
+coverage
+
+# next.js
+out/
+build
+
+# production
+dist/
+dist-server/
+
+# misc
+.DS_Store
+*.pem
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

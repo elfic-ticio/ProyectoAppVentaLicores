@@ -1,0 +1,70 @@
+# Matriz de Privilegios y Roles (RBAC)
+# Leyenda: C=Crear, L=Leer, A=Actualizar, E=Eliminar, N=No permitido
+
+roles:
+  guest:
+    description: "Invitado que navega el catálogo público"
+    mfa_required: false
+  buyer:
+    description: "Usuario registrado que compra"
+    mfa_required: false
+  seller:
+    description: "Empresa/persona moral que publica productos"
+    mfa_required: true
+  moderator:
+    description: "Revisa y aprueba publicaciones"
+    mfa_required: true
+  admin:
+    description: "Gestión operativa y configuración"
+    mfa_required: true
+  super_admin:
+    description: "Acceso total; doble aprobación"
+    mfa_required: true
+  dpo:
+    description: "Oficial de Datos (Derechos ARCO)"
+    mfa_required: true
+
+resources:
+  public_catalog:
+    guest: ["L"]
+    buyer: ["L"]
+    seller: ["L"]
+    moderator: ["L"]
+    admin: ["L"]
+    super_admin: ["L"]
+  
+  self_profile:
+    buyer: ["C", "L", "A", "E"]
+    seller: ["C", "L", "A", "E"]
+    moderator: ["L"]
+    admin: ["L", "A"]
+    super_admin: ["L", "A", "E"]
+
+  own_products:
+    buyer: []
+    seller: ["C", "L", "A", "E"]
+    moderator: ["L", "A"]
+    admin: ["L", "A", "E"]
+    super_admin: ["L", "A", "E"]
+
+  other_products:
+    buyer: ["L"]
+    seller: ["L"]
+    moderator: ["L", "A"] # A = Moderar
+    admin: ["L"]
+    super_admin: ["L", "A", "E"]
+    
+  own_orders:
+    buyer: ["C", "L"]
+    seller: ["L"]
+    moderator: ["L"]
+    admin: ["L"]
+    super_admin: ["L"]
+
+  users_mgmt:
+    admin: ["L", "A"]
+    super_admin: ["C", "L", "A", "E"]
+
+  platform_config:
+    admin: ["L", "A"]
+    super_admin: ["C", "L", "A", "E"]
