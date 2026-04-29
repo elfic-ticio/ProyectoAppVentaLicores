@@ -1,9 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "dist/**"]
+    },
+    "@merma/db#build": {
+      "dependsOn": [],
+      "outputs": ["node_modules/.prisma/client/**"]
     },
     "lint": {},
     "dev": {
