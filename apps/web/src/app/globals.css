@@ -15,8 +15,8 @@
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: #020617 !important; /* Slate 950 forzado */
+  color: #f8fafc !important; /* Slate 50 forzado */
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
