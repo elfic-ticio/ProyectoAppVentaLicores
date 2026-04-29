@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="antialiased bg-gradient-mesh min-h-screen">
+      <body className="antialiased bg-background bg-gradient-mesh min-h-screen text-foreground">
         <Providers>
           <Toaster position="top-right" richColors theme="dark" />
           <Navbar />
