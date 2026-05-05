@@ -4,13 +4,12 @@ RUN npm install -g pnpm@9.0.0
 
 WORKDIR /app
 
-# Copiar todo el monorepo
 COPY . .
 
-# Instalar dependencias (ejecuta postinstall que genera el cliente de Prisma)
-RUN pnpm install --frozen-lockfile
+# Instala dependencias (incluye postinstall que genera el cliente Prisma)
+RUN pnpm install --no-frozen-lockfile
 
-# Compilar el API
+# Compila el API de NestJS
 RUN pnpm --filter api build
 
 EXPOSE 3001
