@@ -10,15 +10,19 @@ export class SearchService implements OnModuleInit {
   private productIndex: Index;
 
   constructor(config: ConfigService) {
-    this.client = new MeiliSearch({
-      host: config.getOrThrow<string>('MEILI_HOST'),
-      apiKey: config.getOrThrow<string>('MEILI_MASTER_KEY'),
-    });
-    this.productIndex = this.client.index('products');
+    const host = config.get<string>('MEILI_HOST');
+    const apiKey = config.get<string>('MEILI_MASTER_KEY');
+    if (host) {
+      this.client = new MeiliSearch({ host, apiKey });
+      this.productIndex = this.client.index('products');
+    }
   }
 
   async onModuleInit() {
-    // Configure index settings: searchable attributes, filterable attributes, and ranking
+    if (!this.client) {
+      this.logger.warn('Meilisearch not configured — search disabled');
+      return;
+    }
     try {
       await this.productIndex.updateSettings({
         searchableAttributes: ['title', 'description', 'sku'],
