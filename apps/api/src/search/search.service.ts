@@ -5,9 +5,9 @@ import { ProductEntity } from '../catalog/domain/product.entity';
 
 @Injectable()
 export class SearchService implements OnModuleInit {
-  private client: MeiliSearch;
+  private client: MeiliSearch | null = null;
   private readonly logger = new Logger(SearchService.name);
-  private productIndex: Index;
+  private productIndex: Index | null = null;
 
   constructor(config: ConfigService) {
     const host = config.get<string>('MEILI_HOST');
@@ -19,7 +19,7 @@ export class SearchService implements OnModuleInit {
   }
 
   async onModuleInit() {
-    if (!this.client) {
+    if (!this.client || !this.productIndex) {
       this.logger.warn('Meilisearch not configured — search disabled');
       return;
     }
@@ -36,6 +36,7 @@ export class SearchService implements OnModuleInit {
   }
 
   async upsertProduct(product: ProductEntity) {
+    if (!this.productIndex) return;
     try {
       await this.productIndex.addDocuments([product]);
     } catch (error) {
@@ -44,6 +45,7 @@ export class SearchService implements OnModuleInit {
   }
 
   async deleteProduct(id: string) {
+    if (!this.productIndex) return;
     try {
       await this.productIndex.deleteDocument(id);
     } catch (error) {
@@ -52,6 +54,7 @@ export class SearchService implements OnModuleInit {
   }
 
   async searchProducts(query: string, filters?: any) {
+    if (!this.productIndex) return { hits: [] };
     return this.productIndex.search(query, {
       filter: filters,
       limit: 20,
