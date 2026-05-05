@@ -22,8 +22,7 @@ export async function adminFetch<T>(endpoint: string, options: RequestInit = {})
   });
 
   if (res.status === 401) {
-    if (typeof window !== 'undefined') window.location.href = '/login';
-    throw new Error('No autorizado');
+    throw new Error('Credenciales incorrectas o sesión expirada');
   }
 
   if (!res.ok) {
