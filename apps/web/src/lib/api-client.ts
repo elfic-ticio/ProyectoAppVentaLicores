@@ -1,9 +1,7 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
+// En Vercel: usa URL relativa — next.config.ts reescribe /api/v1/* → backend real.
+// En local: NEXT_PUBLIC_API_URL apunta a http://localhost:3001/api/v1
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? '/api/v1';
 
-/**
- * Basic API client for Merma Marketplace.
- * Handles common fetch logic and typing.
- */
 export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${BASE_URL}${endpoint}`;
   

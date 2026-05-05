@@ -1,18 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { 
-  LayoutDashboard, 
-  Package, 
-  Users, 
-  ShoppingCart, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Package,
+  Users,
+  ShoppingCart,
+  Settings,
   LogOut,
   ShoppingBag,
   Bell
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
@@ -25,6 +25,12 @@ const menuItems = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await fetch("/api/admin/session", { method: "DELETE" });
+    router.push("/login");
+  };
 
   return (
     <div className="flex min-h-screen bg-slate-950 text-slate-50">
@@ -56,7 +62,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         <div className="p-6 mt-auto">
-          <button className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-rose-400 transition-colors w-full">
+          <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-rose-400 transition-colors w-full">
             <LogOut className="w-5 h-5" />
             <span className="font-medium text-sm">Cerrar Sesión</span>
           </button>

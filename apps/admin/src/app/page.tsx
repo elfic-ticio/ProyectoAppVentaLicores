@@ -3,9 +3,11 @@
 import { motion } from "framer-motion";
 import { TrendingUp, Package, Users, DollarSign, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import AdminLayout from "@/components/admin-layout";
 
 export default function DashboardPage() {
   return (
+    <AdminLayout>
     <div className="space-y-8">
       {/* Welcome Header */}
       <div>
@@ -93,6 +95,7 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
+    </AdminLayout>
   );
 }
 
