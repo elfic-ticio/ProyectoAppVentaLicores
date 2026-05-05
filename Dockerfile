@@ -16,4 +16,4 @@ EXPOSE 3001
 
 ENV NODE_ENV=production
 
-CMD ["sh", "-c", "cd /app/packages/db && npx prisma migrate deploy --schema=prisma/schema.prisma && cd /app && node apps/api/dist/main"]
+CMD ["sh", "-c", "cd /app/packages/db && npx prisma migrate deploy --schema=prisma/schema.prisma && npx prisma db seed && cd /app && node apps/api/dist/main"]
