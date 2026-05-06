@@ -41,7 +41,7 @@ async function main() {
       sale_price: 850,
       stock: 15,
       condition_grade: ConditionGrade.A,
-      images: ['https://images.unsplash.com/photo-1516535794938-6063878f08cc?q=80&w=800'],
+      images: ['https://picsum.photos/seed/tequila-dj/800/800'],
     },
     {
       sku: 'TEQ-MD-MAESTRO-750',
@@ -51,7 +51,7 @@ async function main() {
       sale_price: 620,
       stock: 24,
       condition_grade: ConditionGrade.B,
-      images: ['https://images.unsplash.com/photo-1608885898801-44755d54022a?q=80&w=800'],
+      images: ['https://picsum.photos/seed/tequila-md/800/800'],
     },
     {
       sku: 'MEZ-400-CONEJOS',
@@ -61,7 +61,7 @@ async function main() {
       sale_price: 390,
       stock: 50,
       condition_grade: ConditionGrade.A,
-      images: ['https://images.unsplash.com/photo-1599021456807-25db0f97072e?q=80&w=800'],
+      images: ['https://picsum.photos/seed/mezcal-400/800/800'],
     },
     {
       sku: 'WHI-JW-BLACK-1L',
@@ -71,17 +71,17 @@ async function main() {
       sale_price: 740,
       stock: 12,
       condition_grade: ConditionGrade.B,
-      images: ['https://images.unsplash.com/photo-1527281405613-39772a149690?q=80&w=800'],
+      images: ['https://picsum.photos/seed/whisky-jw/800/800'],
     },
     {
       sku: 'GIN-HENDRICKS-750',
-      title: 'Ginebra Hendrick\'s Scottish Gin',
+      title: "Ginebra Hendrick's Scottish Gin",
       description: 'Botella icónica. Sin defectos en botella, solo excedente de inventario.',
       original_price: 1050,
       sale_price: 820,
       stock: 8,
       condition_grade: ConditionGrade.A,
-      images: ['https://images.unsplash.com/photo-1551028150-64b9f398f678?q=80&w=800'],
+      images: ['https://picsum.photos/seed/gin-hendricks/800/800'],
     },
     {
       sku: 'TEQ-H-REPOSADO',
@@ -91,14 +91,14 @@ async function main() {
       sale_price: 540,
       stock: 30,
       condition_grade: ConditionGrade.C,
-      images: ['https://images.unsplash.com/photo-1608885898301-209489569738?q=80&w=800'],
+      images: ['https://picsum.photos/seed/tequila-herradura/800/800'],
     }
   ];
 
   for (const item of liquors) {
     await prisma.product.upsert({
       where: { sku: item.sku },
-      update: {},
+      update: { images: item.images, sale_price: item.sale_price, stock: item.stock },
       create: {
         sellerId: seller.id,
         sku: item.sku,

@@ -3,7 +3,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? '/api/v1';
 function getToken() {
   if (typeof window === 'undefined') return null;
   try {
-    const raw = localStorage.getItem('merma-admin-auth');
+    const raw = sessionStorage.getItem('merma-admin-auth');
     return raw ? JSON.parse(raw)?.token : null;
   } catch {
     return null;

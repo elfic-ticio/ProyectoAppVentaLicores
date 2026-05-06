@@ -29,6 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const handleLogout = async () => {
     await fetch("/api/admin/session", { method: "DELETE" });
+    sessionStorage.removeItem("merma-admin-auth");
     router.push("/login");
   };
 

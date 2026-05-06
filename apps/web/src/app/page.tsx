@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ShoppingBag, ArrowRight, ShieldCheck, Zap, Star } from "lucide-react";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -53,12 +54,12 @@ export default function HomePage() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-col sm:flex-row gap-4"
         >
-          <button className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold flex items-center gap-2 transition-all shadow-lg shadow-indigo-500/25 active:scale-95 cursor-pointer">
+          <Link href="/catalog" className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold flex items-center gap-2 transition-all shadow-lg shadow-indigo-500/25 active:scale-95">
             Explorar Catálogo <ArrowRight className="w-5 h-5" />
-          </button>
-          <button className="px-8 py-4 glass hover:bg-white/5 text-white rounded-xl font-semibold transition-all active:scale-95 cursor-pointer">
+          </Link>
+          <Link href="/sellers" className="px-8 py-4 glass hover:bg-white/5 text-white rounded-xl font-semibold transition-all active:scale-95">
             Vender en Merma
-          </button>
+          </Link>
         </motion.div>
 
         {/* Feature Grid */}

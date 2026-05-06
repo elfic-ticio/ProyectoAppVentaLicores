@@ -32,6 +32,7 @@ export default function AdminLoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: data.access_token }),
       });
+      sessionStorage.setItem("merma-admin-auth", JSON.stringify({ token: data.access_token }));
       router.push("/");
     } catch (err: any) {
       setError(err.message || "Credenciales incorrectas");
